@@ -1,0 +1,3 @@
+# Persistent CUGA state and DAM's installed-skill link live in the seeded work tree.
+/.cuga/
+/.agents

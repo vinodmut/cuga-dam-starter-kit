@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/dam-agents/dam/main/helm/starter-kits/kit.schema.json
+schemaVersion: v1
+id: cuga-acp
+name: CUGA
+description: >-
+  General-purpose CUGA text agent for DAM ACP chat, connected tools, installed
+  skills, Slack channels, and scheduled tasks. The kit creates a disabled
+  example schedule and no automatic external posts.
+tagline: CUGA with ACP and DAM tools
+category: productivity
+docsUrl: https://github.com/vinodmut/cuga-dam-starter-kit/blob/main/README.md
+
+image:
+  ref: docker.io/vinodmut/cuga-dam@sha256:79c388a9a01fb4693827fda8ba6c1d85eeeddf7f4ac2d9c813a461dd405c3da6
+  providers: [ibm-litellm]
+
+seed:
+  self: true
+  into: work
+
+connections:
+  - accepts: [github, github-enterprise]
+    required: false
+    note: Grant one only when this agent needs to read or write GitHub repositories.
+
+channels:
+  - type: slack
+    note: Optional channel for Slack mentions and replies.
+
+schedules:
+  - name: cuga-acp-weekly-self-check
+    cron: "0 9 * * 1"
+    description: Optional weekly ACP and DAM tool check; creates no external posts.
+    sessionMode: fresh
+    enabled: false
+    task: >-
+      Check that this CUGA agent can answer through ACP. Report the current time,
+      the DAM tool categories you can see, and the names of installed skills.
+      Do not write to an external service or create a new schedule. Put the
+      result only in this DAM session.
+
+resources:
+  cpu: "1"
+  memory: 2Gi
+  note: Prior ten-session Slack/GitHub load testing passed at this size.
+
+egressPreset: all
+hibernationTimeoutMin: 60
